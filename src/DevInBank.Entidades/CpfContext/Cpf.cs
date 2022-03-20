@@ -38,7 +38,7 @@ namespace DevInBank.Entidades.CpfContext
 
             var cpfValidado = String.Join("", NumerosCpf);
             if (!(cpfValidado == CpfCopia))
-                throw new Exception("O cpf nao e valido");
+                throw new Exception("OPA!, temos um erro. O cpf nao e valido");
 
             return CpfOriginal;
         }
@@ -84,7 +84,7 @@ namespace DevInBank.Entidades.CpfContext
         private void InserirCpf(string cpf)
         {
             if (!(cpf.Length == 14))
-                throw new Exception("O cpf deve estar no formato ###.###.###-##");
+                throw new Exception("OPA!, temos um erro. O cpf deve estar no formato ###.###.###-##");
 
             CpfOriginal = cpf;
         }
