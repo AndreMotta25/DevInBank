@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DevInBank.Entidades.TransacoesContext;
+using DevInBank.Entidades.CategoriaContext;
+using DevInBank.Entidades.EnumCategoria;
 
 namespace DevInBank.Entidades.ContaContext
 {
@@ -28,6 +31,11 @@ namespace DevInBank.Entidades.ContaContext
 
                 LimiteChequeEspecial = chequeEspecial;
                 SaldoConta = resultadoSaque;
+                
+                Categoria categoria = new Categoria("Saque",ECategoria.Despesa);
+                Transacoes.Add(new Transacao(valor,categoria, DateTime.Now.AddDays(-1)));
+
+                Console.WriteLine(SaldoConta);
                 Console.WriteLine("Saque efetuado");
                 Console.WriteLine("Obs:Voce utilizou um pouco do seu cheque especial");
             }

@@ -11,12 +11,12 @@ namespace DevInBank.Entidades.CategoriaContext
     {
         public Categoria(string nome, ECategoria tipoCategoria)
         {
-            Id = Guid.NewGuid();
+            //Id = Guid.NewGuid();
             Nome = nome;
             TipoCategoria = tipoCategoria;
         }
 
-        private Guid Id { get; set; }
+        //private Guid Id { get; set; }
         public string Nome { get; private set; }
         public ECategoria TipoCategoria { get; private set; }
 

@@ -12,3 +12,5 @@ Console.WriteLine(conta1.Saldo());
 conta1.Depositar(100);
 
 Console.WriteLine(conta1.Saldo());
+Console.WriteLine();
+conta1.Extrato();
