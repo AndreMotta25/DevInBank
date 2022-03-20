@@ -8,6 +8,7 @@ using DevInBank.Entidades.CpfContext;
 using DevInBank.Entidades.TransacoesContext;
 using DevInBank.Entidades.CategoriaContext;
 using DevInBank.Entidades.EnumCategoria;
+using DevInBank.Entidades.TransferenciaContext;
 
 namespace DevInBank.Entidades.ContaContext
 {
@@ -29,9 +30,16 @@ namespace DevInBank.Entidades.ContaContext
 
         public List<Transacao> Transacoes { get; set; }
 
+        // teste 
+        public List<Transferencia> Transferencias { get; set; }
+        public Guid Id { get; private set; }
+        
+        
+        
+
         #endregion
 
-        public ContaBase(string nome, string cpf, string endereco, decimal rendaMensal, decimal saldo)
+        public ContaBase(string nome, string cpf, string endereco, decimal rendaMensal, decimal saldo, List<Transferencia> transferencias )
         {
             Nome = nome;
             Endereco = endereco;
@@ -42,6 +50,8 @@ namespace DevInBank.Entidades.ContaContext
             Conta = new GeradorConta().GerarNumeros();
             ValidarCpf = new Cpf(cpf);
             Cpf = ValidarCpf.ValidarCpf();
+            Transferencias = transferencias;
+            Id = Guid.NewGuid();
         }
 
 
@@ -50,11 +60,9 @@ namespace DevInBank.Entidades.ContaContext
             if (valor <= SaldoConta)
             {
                 SaldoConta -= valor;
-                
-                Categoria categoria = new Categoria("Saque",ECategoria.Despesa);
-                Transacoes.Add(new Transacao(valor,categoria, DateTime.Now.AddDays(-1)));
 
                 Console.WriteLine("Saque efetuado");
+                CriarTransacao("Saque",valor,ECategoria.Despesa);
             }
             else
                 Console.WriteLine("Voce nao possui valor o suficiente para fazer esse saque!");
@@ -71,17 +79,42 @@ namespace DevInBank.Entidades.ContaContext
         {
             if (valor > 0){
                 SaldoConta += valor;
-                Categoria categoria = new Categoria("Deposito",ECategoria.Receita);
-                Transacoes.Add(new Transacao(valor,categoria, DateTime.Now.AddDays(-1)));
+                CriarTransacao("Deposito",valor,ECategoria.Receita); 
             }    
         }
         
         public virtual void Extrato() {
             Console.WriteLine("================= Extrato ==================");
             foreach(Transacao tr in Transacoes) {
-                Console.WriteLine($"{tr.Categoria.TipoCategoria} => R${tr.Valor:N2} Data: {tr.DataTransacao}");
+                Console.WriteLine($"{tr.Categoria.Nome} => R${tr.Valor:N2} Data: {tr.DataTransacao}");
             }
         }
         
+        // talvez eu tenha que modificar algumas coisas aqui ainda
+        public virtual void Transferencia(ContaBase contaDestino, decimal valor) 
+        {
+              if(valor <= SaldoConta && !(Id == contaDestino.Id)) {
+                  SaldoConta -= valor;
+                  contaDestino.Depositar(valor);
+                  Console.WriteLine($"Transferindo dinheiro para {contaDestino.Nome}");
+                  
+                  Transferencia transferencia  = new Transferencia(this, contaDestino,DateTime.Now ,valor);
+                  Transferencias.Add(transferencia); 
+                  CriarTransacao("Transferencia", valor, ECategoria.Despesa);
+                  return;
+              } 
+              else if(Id == contaDestino.Id && Cpf == contaDestino.Cpf) 
+                throw new Exception("Nao pode transferir para usuarios de mesma titularidade");    
+              
+              else        
+                throw new Exception("Erro na transferencia..."); 
+        }
+
+        public void CriarTransacao(string ctg, decimal valor, ECategoria tipo ){
+            
+            Categoria categoria = new Categoria(ctg, tipo);
+            Transacoes.Add(new Transacao(valor,categoria, DateTime.Now.AddDays(-1)));
+
+        }
     }
 }

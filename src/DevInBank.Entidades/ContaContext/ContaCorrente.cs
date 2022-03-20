@@ -6,14 +6,15 @@ using System.Threading.Tasks;
 using DevInBank.Entidades.TransacoesContext;
 using DevInBank.Entidades.CategoriaContext;
 using DevInBank.Entidades.EnumCategoria;
+using DevInBank.Entidades.TransferenciaContext;
 
 namespace DevInBank.Entidades.ContaContext
 {
     public class ContaCorrente : ContaBase
     {
         public decimal LimiteChequeEspecial { get; private set; }
-        public ContaCorrente(string nome, string cpf, string endereco, decimal rendaMensal, decimal saldo) :
-            base(nome, cpf, endereco, rendaMensal, saldo)
+        public ContaCorrente(string nome, string cpf, string endereco, decimal rendaMensal, decimal saldo,List<Transferencia> transferencias) :
+            base(nome, cpf, endereco, rendaMensal, saldo, transferencias)
         {
             LimiteChequeEspecial = rendaMensal * 0.10M;
         }
@@ -32,8 +33,9 @@ namespace DevInBank.Entidades.ContaContext
                 LimiteChequeEspecial = chequeEspecial;
                 SaldoConta = resultadoSaque;
                 
-                Categoria categoria = new Categoria("Saque",ECategoria.Despesa);
-                Transacoes.Add(new Transacao(valor,categoria, DateTime.Now.AddDays(-1)));
+                // Categoria categoria = new Categoria("Saque",ECategoria.Despesa);
+                // Transacoes.Add(new Transacao(valor,categoria, DateTime.Now.AddDays(-1)));
+                CriarTransacao("Saque", valor,ECategoria.Despesa);
 
                 Console.WriteLine(SaldoConta);
                 Console.WriteLine("Saque efetuado");
