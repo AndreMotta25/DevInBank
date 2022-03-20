@@ -33,13 +33,13 @@ namespace DevInBank.Entidades.ContaContext
         // teste 
         public List<Transferencia> Transferencias { get; set; }
         public Guid Id { get; private set; }
-        
-        
-        
+
+
+
 
         #endregion
 
-        public ContaBase(string nome, string cpf, string endereco, decimal rendaMensal, decimal saldo, List<Transferencia> transferencias )
+        public ContaBase(string nome, string cpf, string endereco, decimal rendaMensal, decimal saldo, List<Transferencia> transferencias)
         {
             Nome = nome;
             Endereco = endereco;
@@ -62,7 +62,7 @@ namespace DevInBank.Entidades.ContaContext
                 SaldoConta -= valor;
 
                 Console.WriteLine("Saque efetuado");
-                CriarTransacao("Saque",valor,ECategoria.Despesa);
+                CriarTransacao("Saque", valor, ECategoria.Despesa);
             }
             else
                 Console.WriteLine("Voce nao possui valor o suficiente para fazer esse saque!");
@@ -77,43 +77,48 @@ namespace DevInBank.Entidades.ContaContext
 
         public virtual void Depositar(decimal valor)
         {
-            if (valor > 0){
+            if (valor > 0)
+            {
                 SaldoConta += valor;
-                CriarTransacao("Deposito",valor,ECategoria.Receita); 
-            }    
+                CriarTransacao("Deposito", valor, ECategoria.Receita);
+            }
         }
-        
-        public virtual void Extrato() {
+
+        public virtual void Extrato()
+        {
             Console.WriteLine("================= Extrato ==================");
-            foreach(Transacao tr in Transacoes) {
+            foreach (Transacao tr in Transacoes)
+            {
                 Console.WriteLine($"{tr.Categoria.Nome} => R${tr.Valor:N2} Data: {tr.DataTransacao}");
             }
         }
-        
-        // talvez eu tenha que modificar algumas coisas aqui ainda
-        public virtual void Transferencia(ContaBase contaDestino, decimal valor) 
+
+        // talvez eu tenha que modificar algumas coisas aqui ainda(tira o id)
+        public virtual void Transferencia(ContaBase contaDestino, decimal valor)
         {
-              if(valor <= SaldoConta && !(Id == contaDestino.Id)) {
-                  SaldoConta -= valor;
-                  contaDestino.Depositar(valor);
-                  Console.WriteLine($"Transferindo dinheiro para {contaDestino.Nome}");
-                  
-                  Transferencia transferencia  = new Transferencia(this, contaDestino,DateTime.Now ,valor);
-                  Transferencias.Add(transferencia); 
-                  CriarTransacao("Transferencia", valor, ECategoria.Despesa);
-                  return;
-              } 
-              else if(Id == contaDestino.Id && Cpf == contaDestino.Cpf) 
-                throw new Exception("Nao pode transferir para usuarios de mesma titularidade");    
-              
-              else        
-                throw new Exception("Erro na transferencia..."); 
+            if (valor <= SaldoConta && !(Id == contaDestino.Id))
+            {
+                SaldoConta -= valor;
+                contaDestino.Depositar(valor);
+                Console.WriteLine($"Transferindo dinheiro para {contaDestino.Nome}");
+
+                Transferencia transferencia = new Transferencia(this, contaDestino, DateTime.Now, valor);
+                Transferencias.Add(transferencia);
+                CriarTransacao("Transferencia", valor, ECategoria.Despesa);
+                return;
+            }
+            else if (Id == contaDestino.Id && Cpf == contaDestino.Cpf)
+                throw new Exception("Nao pode transferir para usuarios de mesma titularidade");
+
+            else
+                throw new Exception("Erro na transferencia...");
         }
 
-        public void CriarTransacao(string ctg, decimal valor, ECategoria tipo ){
-            
+        public void CriarTransacao(string ctg, decimal valor, ECategoria tipo)
+        {
+
             Categoria categoria = new Categoria(ctg, tipo);
-            Transacoes.Add(new Transacao(valor,categoria, DateTime.Now.AddDays(-1)));
+            Transacoes.Add(new Transacao(valor, categoria, DateTime.Now.AddDays(-1)));
 
         }
     }

@@ -28,10 +28,10 @@ namespace DevInBank.Entidades.AppContext
         {
             var contaAchada = ContasCorrente.FirstOrDefault(contaSalva => contaSalva.Cpf == conta.Cpf);
             if (contaAchada != null)
-            {
                 throw new Exception("Uma conta vinculada a este cpf ja existe em nossa base de dados");
-            }
+
             ContasCorrente.Add(conta);
+            Console.WriteLine("Os dados da sua conta sao: ");
             Console.WriteLine("Conta adicionada");
         }
 
