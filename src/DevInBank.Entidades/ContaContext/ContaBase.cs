@@ -121,5 +121,10 @@ namespace DevInBank.Entidades.ContaContext
             Transacoes.Add(new Transacao(valor, categoria, DateTime.Now.AddDays(-1)));
 
         }
+
+        public void InformarDados()
+        {
+            Console.WriteLine($"");
+        }
     }
 }

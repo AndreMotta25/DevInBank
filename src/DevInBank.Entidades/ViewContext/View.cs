@@ -11,7 +11,6 @@ namespace DevInBank.Entidades.ViewContext
             Console.WriteLine("======= Painel =======");
             Console.WriteLine("[0] Sair");
             Console.WriteLine("[1] Criar Conta");
-
             Console.WriteLine("======================");
             return Pergunta();
         }
