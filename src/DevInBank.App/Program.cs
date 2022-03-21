@@ -6,6 +6,7 @@ using DevInBank.Entidades.ModelsContext;
 var app = new App();
 View visualizacao = new View();
 
+
 while (true)
 {
     try
@@ -19,7 +20,10 @@ while (true)
         {
             opt = visualizacao.EscolhaTipoConta();
             var dadosConta = visualizacao.MontarConta(app.Agencias);
-            
+
+            // gera o numero da conta
+            int numeroConta = app.Contas.Count + 1;
+
             Console.Clear();
 
             if (opt == 0)
@@ -28,14 +32,25 @@ while (true)
                                                  dadosConta.Endereco,
                                                  dadosConta.RendaMensal,
                                                  dadosConta.SaldoConta,
-                                                 dadosConta.Agencia));
-            else if (opt == 1)
-                app.CriarConta(new ContaPoupanca(dadosConta.Nome,
+                                                 dadosConta.Agencia,
+                                                 numeroConta));
+            
+            else if (opt == 1) {
+                var conta = new ContaPoupanca(dadosConta.Nome,
                                                  dadosConta.Cpf,
                                                  dadosConta.Endereco,
                                                  dadosConta.RendaMensal,
                                                  dadosConta.SaldoConta,
-                                                 dadosConta.Agencia));
+                                                 dadosConta.Agencia,
+                                                 numeroConta);
+
+                var simulacaoRendimento =  visualizacao.SimularPoupancaView();                                
+                
+                conta.SimulacaoDeInvestimento(simulacaoRendimento.Meses, simulacaoRendimento.RentabilidadeAnual);                                 
+                
+                app.CriarConta(conta);
+            }
+                                                 
         }
     }
     catch (Exception ex)

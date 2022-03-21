@@ -10,11 +10,21 @@ namespace DevInBank.Entidades.ContaContext
 {
     public class ContaPoupanca : ContaBase
     {
-        public ContaPoupanca(string nome, string cpf, string endereco, decimal rendaMensal, decimal saldo, Agencia agencia) :
-            base(nome, cpf, endereco, rendaMensal, saldo, agencia )
+        public ContaPoupanca(string nome, string cpf, string endereco, decimal rendaMensal, decimal saldo, Agencia agencia, int conta) :
+            base(nome, cpf, endereco, rendaMensal, saldo, agencia, conta )
         {
         }
 
-        public void SimulacaoDeInvestimento(decimal valor, DateTime tempo) {}
+        public void SimulacaoDeInvestimento(int meses,decimal porcentagemAnual) {
+             
+             decimal porcentagemMensal = ((porcentagemAnual/12) / 100);
+             var valor  =  SaldoConta;   
+             
+             for(int mes = 0; mes < meses; mes++){
+                valor += porcentagemMensal * valor;
+             }
+            
+            Console.WriteLine($"{valor:N2}");
+        }
     }
 }

@@ -14,8 +14,8 @@ namespace DevInBank.Entidades.ContaContext
     public class ContaCorrente : ContaBase
     {
         public decimal LimiteChequeEspecial { get; private set; }
-        public ContaCorrente(string nome, string cpf, string endereco, decimal rendaMensal, decimal saldo, Agencia agencia) :
-            base(nome, cpf, endereco, rendaMensal, saldo, agencia)
+        public ContaCorrente(string nome, string cpf, string endereco, decimal rendaMensal, decimal saldo, Agencia agencia, int conta) :
+            base(nome, cpf, endereco, rendaMensal, saldo, agencia, conta)
         {
             LimiteChequeEspecial = rendaMensal * 0.10M;
         }
@@ -34,8 +34,6 @@ namespace DevInBank.Entidades.ContaContext
                 LimiteChequeEspecial = chequeEspecial;
                 SaldoConta = resultadoSaque;
                 
-                // Categoria categoria = new Categoria("Saque",ECategoria.Despesa);
-                // Transacoes.Add(new Transacao(valor,categoria, DateTime.Now.AddDays(-1)));
                 CriarTransacao("Saque", valor,ECategoria.Despesa);
 
                 Console.WriteLine(SaldoConta);

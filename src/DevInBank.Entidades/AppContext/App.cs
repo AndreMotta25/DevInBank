@@ -24,13 +24,14 @@ namespace DevInBank.Entidades.AppContext
                 new Agencia("São Jose","002"),
                 new Agencia("Biguaçu","003")
             };
-            //ViewLayer = new View();
+            Contas = new List<ContaBase>();
            
         }
 
         public void CriarConta(ContaPoupanca conta)
         {
             Console.WriteLine("poupanca");
+            Contas.Add(conta);
         }
         public void CriarConta(ContaCorrente conta)
         {
@@ -44,6 +45,7 @@ namespace DevInBank.Entidades.AppContext
             conta.InformarDados();
             
             Console.WriteLine("Conta adicionada");
+            Contas.Add(conta);
         }
 
 
@@ -51,9 +53,17 @@ namespace DevInBank.Entidades.AppContext
         public List<ContaCorrente> ContasCorrente { get; private set; }
         public List<ContaPoupanca> ContasPoupanca { get; private set; }
         public List<ContaInvestimento> ContasInvestimentos { get; private set; }
-        //public View ViewLayer { get; set; }
+
+        public List<ContaBase> Contas {get;set;}
 
 
 
     }
 }
+
+
+/*
+    =============== Alteracoes ================
+    2 - Pegar o objeto conta por meio de uma conta
+
+*/

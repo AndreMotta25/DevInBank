@@ -81,5 +81,19 @@ namespace DevInBank.Entidades.ViewContext
 
             return agenciaEscolhida;
         } 
+
+        public ModelSimulacao SimularPoupancaView() 
+        {
+            decimal porcentagemAnual =  0;
+            
+            Console.WriteLine($"Por quantos meses voce quer investir ? obs: digite um numero inteiro");
+            int meses = int.Parse(Console.ReadLine());
+
+            Console.WriteLine($"Qual e a porcentage anual da poupanca ? ");
+            decimal.TryParse(Console.ReadLine().Replace(".",","),out porcentagemAnual);
+
+            // DTO  
+            return  new ModelSimulacao(meses,porcentagemAnual);
+        }
     }
 }

@@ -27,7 +27,7 @@ namespace DevInBank.Entidades.ContaContext
         public decimal SaldoConta { get; protected set; }
         // Enum
         public Agencia Agencia { get; private set; }
-        public string Conta { get; private set; }
+        public int Conta { get; private set; }
 
         public List<Transacao> Transacoes { get; set; }
 
@@ -43,7 +43,7 @@ namespace DevInBank.Entidades.ContaContext
 
         #endregion
 
-        public ContaBase(string nome, string cpf, string endereco, decimal rendaMensal, decimal saldo, Agencia agencia)
+        public ContaBase(string nome, string cpf, string endereco, decimal rendaMensal, decimal saldo, Agencia agencia,int conta)
         {
             Nome = nome;
             Endereco = endereco;
@@ -51,10 +51,9 @@ namespace DevInBank.Entidades.ContaContext
             SaldoConta = saldo;
             Transacoes = new List<Transacao>();
             Agencia = agencia;
-            Conta = new GeradorConta().GerarNumeros();
+            Conta = conta;
             ValidarCpf = new Cpf(cpf);
             Cpf = ValidarCpf.ValidarCpf();
-            //Transferencias = transferencias;
             Id = Guid.NewGuid();
             
         }
