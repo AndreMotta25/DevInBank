@@ -21,7 +21,7 @@ while (true)
             opt = visualizacao.EscolhaTipoConta();
             var dadosConta = visualizacao.MontarConta(app.Agencias);
 
-            // gera o numero da conta
+            // gera o numero da conta, semelhante a um id que vai sempre se incrementando
             int numeroConta = app.Contas.Count + 1;
 
             Console.Clear();

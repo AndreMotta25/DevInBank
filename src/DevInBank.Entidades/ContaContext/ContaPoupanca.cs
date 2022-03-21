@@ -15,8 +15,7 @@ namespace DevInBank.Entidades.ContaContext
         {
         }
 
-        public void SimulacaoDeInvestimento(int meses,decimal porcentagemAnual) {
-             
+        public void SimulacaoDeInvestimento(int meses,decimal porcentagemAnual) {      
              decimal porcentagemMensal = ((porcentagemAnual/12) / 100);
              var valor  =  SaldoConta;   
              

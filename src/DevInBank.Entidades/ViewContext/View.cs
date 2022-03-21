@@ -84,6 +84,8 @@ namespace DevInBank.Entidades.ViewContext
 
         public ModelSimulacao SimularPoupancaView() 
         {
+            Console.WriteLine($"Ao criar uma conta poupanca seu dinheiro vai render!, preencha os dados abaixo para saber mais.");
+            
             decimal porcentagemAnual =  0;
             
             Console.WriteLine($"Por quantos meses voce quer investir ? obs: digite um numero inteiro");
