@@ -7,14 +7,15 @@ using DevInBank.Entidades.TransacoesContext;
 using DevInBank.Entidades.CategoriaContext;
 using DevInBank.Entidades.EnumCategoria;
 using DevInBank.Entidades.TransferenciaContext;
+using DevInBank.Entidades.AgenciaContext;
 
 namespace DevInBank.Entidades.ContaContext
 {
     public class ContaCorrente : ContaBase
     {
         public decimal LimiteChequeEspecial { get; private set; }
-        public ContaCorrente(string nome, string cpf, string endereco, decimal rendaMensal, decimal saldo,List<Transferencia> transferencias) :
-            base(nome, cpf, endereco, rendaMensal, saldo, transferencias)
+        public ContaCorrente(string nome, string cpf, string endereco, decimal rendaMensal, decimal saldo, Agencia agencia) :
+            base(nome, cpf, endereco, rendaMensal, saldo, agencia)
         {
             LimiteChequeEspecial = rendaMensal * 0.10M;
         }

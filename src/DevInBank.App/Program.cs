@@ -18,7 +18,8 @@ while (true)
         else if (opt == 1)
         {
             opt = visualizacao.EscolhaTipoConta();
-            var dadosConta = visualizacao.MontarConta();
+            var dadosConta = visualizacao.MontarConta(app.Agencias);
+            
             Console.Clear();
 
             if (opt == 0)
@@ -27,14 +28,14 @@ while (true)
                                                  dadosConta.Endereco,
                                                  dadosConta.RendaMensal,
                                                  dadosConta.SaldoConta,
-                                                 app.Transferencias));
+                                                 dadosConta.Agencia));
             else if (opt == 1)
                 app.CriarConta(new ContaPoupanca(dadosConta.Nome,
                                                  dadosConta.Cpf,
                                                  dadosConta.Endereco,
                                                  dadosConta.RendaMensal,
                                                  dadosConta.SaldoConta,
-                                                 app.Transferencias));
+                                                 dadosConta.Agencia));
         }
     }
     catch (Exception ex)

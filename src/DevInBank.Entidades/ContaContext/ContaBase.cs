@@ -9,6 +9,7 @@ using DevInBank.Entidades.TransacoesContext;
 using DevInBank.Entidades.CategoriaContext;
 using DevInBank.Entidades.EnumCategoria;
 using DevInBank.Entidades.TransferenciaContext;
+using DevInBank.Entidades.AgenciaContext;
 
 namespace DevInBank.Entidades.ContaContext
 {
@@ -25,7 +26,7 @@ namespace DevInBank.Entidades.ContaContext
         public decimal RendaMensal { get; private set; }
         public decimal SaldoConta { get; protected set; }
         // Enum
-        public EAgencia Agencia { get; private set; }
+        public Agencia Agencia { get; private set; }
         public string Conta { get; private set; }
 
         public List<Transacao> Transacoes { get; set; }
@@ -34,24 +35,28 @@ namespace DevInBank.Entidades.ContaContext
         public List<Transferencia> Transferencias { get; set; }
         public Guid Id { get; private set; }
 
+        
+        
+        
 
 
 
         #endregion
 
-        public ContaBase(string nome, string cpf, string endereco, decimal rendaMensal, decimal saldo, List<Transferencia> transferencias)
+        public ContaBase(string nome, string cpf, string endereco, decimal rendaMensal, decimal saldo, Agencia agencia)
         {
             Nome = nome;
             Endereco = endereco;
             RendaMensal = rendaMensal;
             SaldoConta = saldo;
             Transacoes = new List<Transacao>();
-            Agencia = (EAgencia)new Random().Next(3);
+            Agencia = agencia;
             Conta = new GeradorConta().GerarNumeros();
             ValidarCpf = new Cpf(cpf);
             Cpf = ValidarCpf.ValidarCpf();
-            Transferencias = transferencias;
+            //Transferencias = transferencias;
             Id = Guid.NewGuid();
+            
         }
 
 
@@ -124,7 +129,12 @@ namespace DevInBank.Entidades.ContaContext
 
         public void InformarDados()
         {
-            Console.WriteLine($"");
+            Console.WriteLine($"Agencia: {Agencia.Name} Numero Da Conta:{Conta}");
         }
+    
+        public void ControladorTransferencia(List<Transferencia> transferencias) {
+            Transferencias = transferencias;
+        }
+        
     }
 }
