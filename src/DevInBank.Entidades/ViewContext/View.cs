@@ -116,7 +116,7 @@ namespace DevInBank.Entidades.ViewContext
             return new ModelSimulacao(meses, porcentagemAnual);
         }
 
-        public void EscolheInvestimentoView(List<TipoInvestimento> tiposInvestimentos)
+        public ModelInvestimento EscolheInvestimentoView(List<TipoInvestimento> tiposInvestimentos)
         {
             Console.Clear();
             // lista todos os tipos de investimentos 
@@ -131,20 +131,26 @@ namespace DevInBank.Entidades.ViewContext
             int indiceDoElementoEscolhido = Pergunta(2);
             var EscolhaInvestimento = tiposInvestimentos[indiceDoElementoEscolhido];
 
-            SimularInvestimentoEscolhidoView(EscolhaInvestimento);
+            return SimularInvestimentoEscolhidoView(EscolhaInvestimento);
 
         }
-        public void SimularInvestimentoEscolhidoView(TipoInvestimento investimentoEscolhido)
+        public ModelInvestimento SimularInvestimentoEscolhidoView(TipoInvestimento investimentoEscolhido)
         {
             Console.Clear();
 
             Console.WriteLine("Quanto você quer investir ?");
             decimal investimento = Convert.ToDecimal(Console.ReadLine());
+            int meses = 0;
+            while(true) {
+                Console.WriteLine("Por quantos meses o valor ficará investido ?");
+                meses = int.Parse(Console.ReadLine());
 
-            Console.WriteLine("Por quantos meses o valor ficará investido ?");
-            int meses = int.Parse(Console.ReadLine());
-
-            // validar os meses
+                if(meses >= investimentoEscolhido.TempoMinimo ) 
+                    break;
+                Console.WriteLine($"Lamento o mes tem que ser maior que  {investimentoEscolhido.TempoMinimo}");
+            }
+            
+            return new ModelInvestimento(investimentoEscolhido, meses, investimento );
 
         }
         public void ResultadoDaSimulacaoView() { }

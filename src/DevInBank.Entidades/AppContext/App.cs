@@ -32,6 +32,10 @@ namespace DevInBank.Entidades.AppContext
                 new TipoInvestimento("LCA",9,12),
                 new TipoInvestimento("CDB",10,36)
             };
+            Tempo = DateTime.Now;
+            //Console.WriteLine((DateTime.Now.AddDays(5) - DateTime.Now).Days + "Dias");
+            Console.WriteLine((DateTime.Now.AddMonths(6) - DateTime.Now).Days + " dias");
+                
         }
 
         public void CriarConta(ContaPoupanca conta)
@@ -59,16 +63,21 @@ namespace DevInBank.Entidades.AppContext
             Contas.Add(conta);
         }
 
+        public int PassarTempo(int meses) {
+            var dias = (DateTime.Now.AddMonths(meses) - DateTime.Now).Days; 
+            return dias;
+        } 
+
+
 
         public List<Transferencia> Transferencias { get; private set; }
         public List<ContaCorrente> ContasCorrente { get; private set; }
         public List<ContaPoupanca> ContasPoupanca { get; private set; }
         public List<ContaInvestimento> ContasInvestimentos { get; private set; }
-
         public List<TipoInvestimento> TiposDeInvestimentos { get; private set; }
         public List<ContaBase> Contas { get; set; }
-
-
+        public DateTime TempoSimulado {get;set;}
+        public DateTime Tempo {get;set;}    
 
     }
 }
