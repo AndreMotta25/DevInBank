@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DevInBank.Entidades.AgenciaContext;
+using DevInBank.Entidades.InvestimentosContext;
 
 namespace DevInBank.Entidades.AppContext
 {
@@ -25,12 +26,22 @@ namespace DevInBank.Entidades.AppContext
                 new Agencia("Biguaçu","003")
             };
             Contas = new List<ContaBase>();
-           
+            TiposDeInvestimentos = new List<TipoInvestimento>()
+            {
+                new TipoInvestimento("LCI",8,6),
+                new TipoInvestimento("LCA",9,12),
+                new TipoInvestimento("CDB",10,36)
+            };
         }
 
         public void CriarConta(ContaPoupanca conta)
         {
-            Console.WriteLine("poupanca");
+            Console.WriteLine("poupanca em produção");
+            Contas.Add(conta);
+        }
+        public void CriarConta(ContaInvestimento conta)
+        {
+            Console.WriteLine("investimento em produção");
             Contas.Add(conta);
         }
         public void CriarConta(ContaCorrente conta)
@@ -40,10 +51,10 @@ namespace DevInBank.Entidades.AppContext
                 throw new Exception("Uma conta vinculada a este cpf ja existe em nossa base de dados");
 
             conta.ControladorTransferencia(Transferencias);
-            
+
             ContasCorrente.Add(conta);
             conta.InformarDados();
-            
+
             Console.WriteLine("Conta adicionada");
             Contas.Add(conta);
         }
@@ -54,7 +65,8 @@ namespace DevInBank.Entidades.AppContext
         public List<ContaPoupanca> ContasPoupanca { get; private set; }
         public List<ContaInvestimento> ContasInvestimentos { get; private set; }
 
-        public List<ContaBase> Contas {get;set;}
+        public List<TipoInvestimento> TiposDeInvestimentos { get; private set; }
+        public List<ContaBase> Contas { get; set; }
 
 
 
@@ -64,6 +76,6 @@ namespace DevInBank.Entidades.AppContext
 
 /*
     =============== Alteracoes ================
-    2 - Pegar o objeto conta por meio de uma conta
-
+    1 - Pegar o objeto conta por meio de uma conta
+    2 - Modificar o metodo da camada de view onde se escolhe a agencia
 */

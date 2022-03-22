@@ -27,6 +27,8 @@ while (true)
             Console.Clear();
 
             if (opt == 0)
+            {
+                Console.WriteLine("Parabens! Você Escolheu a conta Corrente");
                 app.CriarConta(new ContaCorrente(dadosConta.Nome,
                                                  dadosConta.Cpf,
                                                  dadosConta.Endereco,
@@ -34,8 +36,10 @@ while (true)
                                                  dadosConta.SaldoConta,
                                                  dadosConta.Agencia,
                                                  numeroConta));
-            
-            else if (opt == 1) {
+            }
+            else if (opt == 1)
+            {
+                Console.WriteLine("Parabens! Você Escolheu a conta Poupança");
                 var conta = new ContaPoupanca(dadosConta.Nome,
                                                  dadosConta.Cpf,
                                                  dadosConta.Endereco,
@@ -44,13 +48,31 @@ while (true)
                                                  dadosConta.Agencia,
                                                  numeroConta);
 
-                var simulacaoRendimento =  visualizacao.SimularPoupancaView();                                
-                
-                conta.SimulacaoDeInvestimento(simulacaoRendimento.Meses, simulacaoRendimento.RentabilidadeAnual);                                 
-                
+                var simulacaoRendimento = visualizacao.SimularPoupancaView();
+
+                conta.SimulacaoDeInvestimento(simulacaoRendimento.Meses, simulacaoRendimento.RentabilidadeAnual);
+
                 app.CriarConta(conta);
             }
-                                                 
+            else if (opt == 2)
+            {
+                Console.WriteLine("Parabens! Você Escolheu a conta investimento");
+
+                var conta = new ContaInvestimento(dadosConta.Nome,
+                                                 dadosConta.Cpf,
+                                                 dadosConta.Endereco,
+                                                 dadosConta.RendaMensal,
+                                                 dadosConta.SaldoConta,
+                                                 dadosConta.Agencia,
+                                                 numeroConta);
+
+                visualizacao.EscolheInvestimentoView(app.TiposDeInvestimentos);
+
+                // conta.InvestimentoSolicitado(escolhaInvestimento);
+
+                app.CriarConta(conta);
+            }
+
         }
     }
     catch (Exception ex)
