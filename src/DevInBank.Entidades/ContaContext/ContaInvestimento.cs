@@ -1,4 +1,5 @@
 ﻿using DevInBank.Entidades.AgenciaContext;
+using DevInBank.Entidades.ModelsContext;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,9 +15,12 @@ namespace DevInBank.Entidades.ContaContext
         }
 
         // passar um modelDados com os dados de investimento
-        public void InvestimentoSolicitado(int tipoInvestimento)
+        public void InvestimentoSolicitado(ModelInvestimento investimento,int dias)
         {
-
+            Console.WriteLine(dias);            
+            decimal porcentagemDiaria =  investimento.Tipo.Porcentagem / dias;
+            Console.WriteLine(porcentagemDiaria);
+            
         }
     }
 }

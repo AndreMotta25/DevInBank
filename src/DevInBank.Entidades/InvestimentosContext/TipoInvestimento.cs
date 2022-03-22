@@ -8,7 +8,7 @@ namespace DevInBank.Entidades.InvestimentosContext
 {
     public class TipoInvestimento
     {
-        public TipoInvestimento(string nome, int porcentagem, int tempoMinimo)
+        public TipoInvestimento(string nome, decimal porcentagem, int tempoMinimo)
         {
             Nome = nome;
             Porcentagem = porcentagem;
@@ -16,7 +16,7 @@ namespace DevInBank.Entidades.InvestimentosContext
         }
 
         public string Nome { get; private set; }
-        public int Porcentagem { get; private set; }
+        public decimal Porcentagem { get; private set; }
         public int TempoMinimo { get; private set; }
 
     }

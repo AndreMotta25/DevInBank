@@ -28,13 +28,13 @@ namespace DevInBank.Entidades.AppContext
             Contas = new List<ContaBase>();
             TiposDeInvestimentos = new List<TipoInvestimento>()
             {
-                new TipoInvestimento("LCI",8,6),
+                new TipoInvestimento("LCI",5.2M,6),
                 new TipoInvestimento("LCA",9,12),
                 new TipoInvestimento("CDB",10,36)
             };
             Tempo = DateTime.Now;
             //Console.WriteLine((DateTime.Now.AddDays(5) - DateTime.Now).Days + "Dias");
-            Console.WriteLine((DateTime.Now.AddMonths(6) - DateTime.Now).Days + " dias");
+            //Console.WriteLine((DateTime.Now.AddMonths(6) - DateTime.Now).Days + " dias");
                 
         }
 

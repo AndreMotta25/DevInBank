@@ -6,7 +6,7 @@ using DevInBank.Entidades.ModelsContext;
 var app = new App();
 View visualizacao = new View();
 
-
+Console.WriteLine(1000*Math.Pow((1+0.052),3));
 while (true)
 {
     try
@@ -66,9 +66,13 @@ while (true)
                                                  dadosConta.Agencia,
                                                  numeroConta);
 
-                visualizacao.EscolheInvestimentoView(app.TiposDeInvestimentos);
-
-                // conta.InvestimentoSolicitado(escolhaInvestimento);
+                ModelInvestimento escolhaInvestimento = visualizacao.EscolheInvestimentoView(app.TiposDeInvestimentos);
+                
+                // transformar meses para dias
+                int mesesParaDias = app.PassarTempo(escolhaInvestimento.TotalDeMeses);
+                
+                Console.WriteLine(escolhaInvestimento.Tipo.Porcentagem / 100);
+                conta.InvestimentoSolicitado(escolhaInvestimento,mesesParaDias);
 
                 app.CriarConta(conta);
             }

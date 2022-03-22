@@ -15,6 +15,7 @@ namespace DevInBank.Entidades.ModelsContext {
         public int TotalDeMeses {get;set;}
         
         public decimal Capital {get;set;}
+
         
     }
 }

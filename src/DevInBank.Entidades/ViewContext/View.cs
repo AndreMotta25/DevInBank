@@ -149,6 +149,7 @@ namespace DevInBank.Entidades.ViewContext
                     break;
                 Console.WriteLine($"Lamento o mes tem que ser maior que  {investimentoEscolhido.TempoMinimo}");
             }
+            Console.WriteLine($"Estamos fazendo o calculo necesssario, por favor espere um momento!");
             
             return new ModelInvestimento(investimentoEscolhido, meses, investimento );
 
