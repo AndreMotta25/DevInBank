@@ -6,7 +6,6 @@ using DevInBank.Entidades.ModelsContext;
 var app = new App();
 View visualizacao = new View();
 
-Console.WriteLine(1000*Math.Pow((1+0.052),3));
 while (true)
 {
     try
@@ -28,7 +27,6 @@ while (true)
 
             if (opt == 0)
             {
-                Console.WriteLine("Parabens! Você Escolheu a conta Corrente");
                 app.CriarConta(new ContaCorrente(dadosConta.Nome,
                                                  dadosConta.Cpf,
                                                  dadosConta.Endereco,
@@ -39,7 +37,6 @@ while (true)
             }
             else if (opt == 1)
             {
-                Console.WriteLine("Parabens! Você Escolheu a conta Poupança");
                 var conta = new ContaPoupanca(dadosConta.Nome,
                                                  dadosConta.Cpf,
                                                  dadosConta.Endereco,
@@ -56,8 +53,6 @@ while (true)
             }
             else if (opt == 2)
             {
-                Console.WriteLine("Parabens! Você Escolheu a conta investimento");
-
                 var conta = new ContaInvestimento(dadosConta.Nome,
                                                  dadosConta.Cpf,
                                                  dadosConta.Endereco,
@@ -65,18 +60,40 @@ while (true)
                                                  dadosConta.SaldoConta,
                                                  dadosConta.Agencia,
                                                  numeroConta);
+                app.VerificarConta(conta);
+                while (true)
+                {
+                    ModelInvestimento escolhaInvestimento = visualizacao.EscolheInvestimentoView(app.TiposDeInvestimentos);
+                    // transformar meses para dias
+                    int mesesParaDias = app.PassarTempo(escolhaInvestimento.TotalDeMeses);
+                    var resposta = conta.InvestimentoSolicitado(escolhaInvestimento, mesesParaDias);
+                    var r = visualizacao.ResultadoDaSimulacaoView(resposta);
 
-                ModelInvestimento escolhaInvestimento = visualizacao.EscolheInvestimentoView(app.TiposDeInvestimentos);
-                
-                // transformar meses para dias
-                int mesesParaDias = app.PassarTempo(escolhaInvestimento.TotalDeMeses);
-                
-                Console.WriteLine(escolhaInvestimento.Tipo.Porcentagem / 100);
-                conta.InvestimentoSolicitado(escolhaInvestimento,mesesParaDias);
-
+                    if (r == 0)
+                    {
+                        conta.FazerInvestimento(escolhaInvestimento, mesesParaDias);
+                        break;
+                    }
+                    else if (r == 1)
+                        break;
+                    else if (r == 2)
+                        continue;
+                }
                 app.CriarConta(conta);
             }
 
+        }
+        else if (opt == 3)
+        {
+            if (app.Contas.Count > 0)
+            {
+                foreach (ContaBase conta in app.Contas)
+                {
+                    conta.InformarDados();
+                }
+                return;
+            }
+            throw new Exception("Não temos contas ainda!");
         }
     }
     catch (Exception ex)

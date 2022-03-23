@@ -13,10 +13,11 @@ namespace DevInBank.Entidades.ViewContext
             Console.WriteLine("======= Painel =======");
             Console.WriteLine("[0] Sair");
             Console.WriteLine("[1] Criar Conta");
+            Console.WriteLine("[2] Portal do Cliente");
+            Console.WriteLine("[3] Listar Contas");
             Console.WriteLine("======================");
-            return Pergunta(1);
+            return Pergunta(4, "Qual opção você deseja ?");
         }
-
         public int EscolhaTipoConta()
         {
             Console.Clear();
@@ -25,7 +26,7 @@ namespace DevInBank.Entidades.ViewContext
             Console.WriteLine("[1] Conta Poupanca");
             Console.WriteLine("[2] Conta Investimento");
             Console.WriteLine("======================");
-            return Pergunta(2);
+            return Pergunta(2, "Qual opção você deseja ?");
         }
 
         public ModelConta MontarConta(List<Agencia> agencias)
@@ -52,12 +53,12 @@ namespace DevInBank.Entidades.ViewContext
             return new ModelConta(nome, cpf, endereco, rendaMensal, saldo, agenciaEscolhida);
         }
 
-        public int Pergunta(int limite)
+        public int Pergunta(int limite, string mensagem)
         {
             int indiceEscolhido = 0;
             while (true)
             {
-                Console.WriteLine("Qual opção voce deseja ?");
+                Console.WriteLine($"{mensagem}");
                 indiceEscolhido = int.Parse(Console.ReadLine());
                 if (indiceEscolhido >= 0 && indiceEscolhido <= limite)
                     break;
@@ -87,7 +88,7 @@ namespace DevInBank.Entidades.ViewContext
                     indice++;
                 }
 
-                indexEscolhido = Pergunta(2);
+                indexEscolhido = Pergunta(2, "Qual opção você deseja ?");
                 if (indexEscolhido <= (agencias.Count - 1))
                     break;
 
@@ -119,6 +120,7 @@ namespace DevInBank.Entidades.ViewContext
         public ModelInvestimento EscolheInvestimentoView(List<TipoInvestimento> tiposInvestimentos)
         {
             Console.Clear();
+            Console.WriteLine("Estas são as opçoes de investimentos para você");
             // lista todos os tipos de investimentos 
             for (int i = 0; i < tiposInvestimentos.Count; i++)
             {
@@ -128,7 +130,7 @@ namespace DevInBank.Entidades.ViewContext
             }
 
             // Pergunta pro usuario qual é o tipo de investimento que ele deseja fazer
-            int indiceDoElementoEscolhido = Pergunta(2);
+            int indiceDoElementoEscolhido = Pergunta(2, "Qual opção você deseja ?");
             var EscolhaInvestimento = tiposInvestimentos[indiceDoElementoEscolhido];
 
             return SimularInvestimentoEscolhidoView(EscolhaInvestimento);
@@ -141,20 +143,30 @@ namespace DevInBank.Entidades.ViewContext
             Console.WriteLine("Quanto você quer investir ?");
             decimal investimento = Convert.ToDecimal(Console.ReadLine());
             int meses = 0;
-            while(true) {
+            while (true)
+            {
                 Console.WriteLine("Por quantos meses o valor ficará investido ?");
                 meses = int.Parse(Console.ReadLine());
 
-                if(meses >= investimentoEscolhido.TempoMinimo ) 
+                if (meses >= investimentoEscolhido.TempoMinimo)
                     break;
                 Console.WriteLine($"Lamento o mes tem que ser maior que  {investimentoEscolhido.TempoMinimo}");
             }
-            Console.WriteLine($"Estamos fazendo o calculo necesssario, por favor espere um momento!");
-            
-            return new ModelInvestimento(investimentoEscolhido, meses, investimento );
+            Console.Clear();
+
+            return new ModelInvestimento(investimentoEscolhido, meses, investimento);
 
         }
-        public void ResultadoDaSimulacaoView() { }
+        public int ResultadoDaSimulacaoView(string resposta)
+        {
+            Console.WriteLine(resposta);
+
+            Console.WriteLine("[0] => Sim");
+            Console.WriteLine("[1] => Não");
+            Console.WriteLine("[2] => Voltar");
+            Console.WriteLine();
+            return Pergunta(2, "Deseja fazer o investimento ?");
+        }
     }
 }
 

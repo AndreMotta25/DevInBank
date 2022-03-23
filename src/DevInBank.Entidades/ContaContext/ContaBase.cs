@@ -35,15 +35,15 @@ namespace DevInBank.Entidades.ContaContext
         public List<Transferencia> Transferencias { get; set; }
         public Guid Id { get; private set; }
 
-        
-        
-        
+
+
+
 
 
 
         #endregion
 
-        public ContaBase(string nome, string cpf, string endereco, decimal rendaMensal, decimal saldo, Agencia agencia,int conta)
+        public ContaBase(string nome, string cpf, string endereco, decimal rendaMensal, decimal saldo, Agencia agencia, int conta)
         {
             Nome = nome;
             Endereco = endereco;
@@ -55,7 +55,7 @@ namespace DevInBank.Entidades.ContaContext
             ValidarCpf = new Cpf(cpf);
             Cpf = ValidarCpf.ValidarCpf();
             Id = Guid.NewGuid();
-            
+
         }
 
 
@@ -100,7 +100,8 @@ namespace DevInBank.Entidades.ContaContext
         // talvez eu tenha que modificar algumas coisas aqui ainda(tira o id)
         public virtual void Transferencia(ContaBase contaDestino, decimal valor)
         {
-            if (valor <= SaldoConta && !(Id == contaDestino.Id))
+            if (valor <= SaldoConta && !(Id == contaDestino.Id) && Cpf == contaDestino.Cpf
+            && DateTime.Now.DayOfWeek != DayOfWeek.Saturday && DateTime.Now.DayOfWeek != DayOfWeek.Sunday)
             {
                 SaldoConta -= valor;
                 contaDestino.Depositar(valor);
@@ -130,10 +131,11 @@ namespace DevInBank.Entidades.ContaContext
         {
             Console.WriteLine($"Agencia: {Agencia.Name} Numero Da Conta:{Conta}");
         }
-    
-        public void ControladorTransferencia(List<Transferencia> transferencias) {
+
+        public void ControladorTransferencia(List<Transferencia> transferencias)
+        {
             Transferencias = transferencias;
         }
-        
+
     }
 }
