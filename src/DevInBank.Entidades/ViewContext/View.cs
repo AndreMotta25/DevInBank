@@ -1,24 +1,30 @@
 using DevInBank.Entidades.AgenciaContext;
+using DevInBank.Entidades.ContaContext;
 using DevInBank.Entidades.InvestimentosContext;
 using DevInBank.Entidades.ModelsContext;
+using DevInBank.Entidades.AppContext;
 
 namespace DevInBank.Entidades.ViewContext
 {
 
-    public class View
+    public static class View
     {
 
-        public int Menu()
+        public static int Menu(App app)
         {
-            Console.WriteLine("======= Painel =======");
+            Console.Clear();
+            Console.WriteLine($"======= Painel =======          Data {app.Tempo}");
             Console.WriteLine("[0] Sair");
             Console.WriteLine("[1] Criar Conta");
             Console.WriteLine("[2] Portal do Cliente");
             Console.WriteLine("[3] Listar Contas");
+            Console.WriteLine("[4] Listar Contas com saldo negativo");
+            Console.WriteLine("[5] Transacoes");
+            Console.WriteLine("[6] Total investido");
             Console.WriteLine("======================");
-            return Pergunta(4, "Qual opção você deseja ?");
+            return Pergunta(7, "Qual opção você deseja ?");
         }
-        public int EscolhaTipoConta()
+        public static int EscolhaTipoConta()
         {
             Console.Clear();
             Console.WriteLine("======= Painel =======");
@@ -29,7 +35,15 @@ namespace DevInBank.Entidades.ViewContext
             return Pergunta(2, "Qual opção você deseja ?");
         }
 
-        public ModelConta MontarConta(List<Agencia> agencias)
+        public static int ListarContas()
+        {
+            Console.WriteLine("[0] Conta Corrente");
+            Console.WriteLine("[1] Conta Poupanca");
+            Console.WriteLine("[2] Conta Investimento");
+            return Pergunta(2, "Qual opção você deseja listar ?");
+        }
+
+        public static ModelConta MontarConta(List<Agencia> agencias)
         {
             Console.Clear();
             Console.WriteLine("Digite seu nome: ");
@@ -53,7 +67,7 @@ namespace DevInBank.Entidades.ViewContext
             return new ModelConta(nome, cpf, endereco, rendaMensal, saldo, agenciaEscolhida);
         }
 
-        public int Pergunta(int limite, string mensagem)
+        public static int Pergunta(int limite, string mensagem)
         {
             int indiceEscolhido = 0;
             while (true)
@@ -70,7 +84,7 @@ namespace DevInBank.Entidades.ViewContext
         }
 
         // Alterar depois o loop
-        public Agencia EscolheAgencia(List<Agencia> agencias)
+        public static Agencia EscolheAgencia(List<Agencia> agencias)
         {
 
             Console.Clear();
@@ -101,7 +115,7 @@ namespace DevInBank.Entidades.ViewContext
             return agenciaEscolhida;
         }
 
-        public ModelSimulacao SimularPoupancaView()
+        public static ModelSimulacao SimularPoupancaView()
         {
             Console.WriteLine($"Ao criar uma conta poupanca seu dinheiro vai render!, preencha os dados abaixo para saber mais.");
 
@@ -117,7 +131,7 @@ namespace DevInBank.Entidades.ViewContext
             return new ModelSimulacao(meses, porcentagemAnual);
         }
 
-        public ModelInvestimento EscolheInvestimentoView(List<TipoInvestimento> tiposInvestimentos)
+        public static ModelInvestimento EscolheInvestimentoView(List<TipoInvestimento> tiposInvestimentos)
         {
             Console.Clear();
             Console.WriteLine("Estas são as opçoes de investimentos para você");
@@ -136,7 +150,7 @@ namespace DevInBank.Entidades.ViewContext
             return SimularInvestimentoEscolhidoView(EscolhaInvestimento);
 
         }
-        public ModelInvestimento SimularInvestimentoEscolhidoView(TipoInvestimento investimentoEscolhido)
+        public static ModelInvestimento SimularInvestimentoEscolhidoView(TipoInvestimento investimentoEscolhido)
         {
             Console.Clear();
 
@@ -157,15 +171,59 @@ namespace DevInBank.Entidades.ViewContext
             return new ModelInvestimento(investimentoEscolhido, meses, investimento);
 
         }
-        public int ResultadoDaSimulacaoView(string resposta)
+        public static void ResultadoDaSimulacaoView(string resposta)
         {
             Console.WriteLine(resposta);
+        }
 
+        public static int DecisaoInvestimentoView()
+        {
             Console.WriteLine("[0] => Sim");
             Console.WriteLine("[1] => Não");
             Console.WriteLine("[2] => Voltar");
             Console.WriteLine();
             return Pergunta(2, "Deseja fazer o investimento ?");
+        }
+        public static void Apagar_E_Esperar_E_MostrarDadosView(ContaBase conta)
+        {
+            conta.InformarDados();
+            Console.WriteLine("Pressione qualquer tecla para voltar para o menu");
+            Console.ReadKey();
+            Console.Clear();
+        }
+
+        public static int InformarcoesDeClientesView(string Mensagem)
+        {
+            Console.WriteLine($"{Mensagem}");
+            return int.Parse(Console.ReadLine());
+        }
+
+        // esse metodo é meio inutil já que o metodo acima faz quase a mesma coisa, aqui eu quebro uma regra
+        public static ContaBase ContaClienteView(App app, string Mensagem)
+        {
+            int nConta = InformarcoesDeClientesView(Mensagem);
+
+            var contaTipo = app.Contas.FirstOrDefault(x => x.Conta == nConta);
+            if (contaTipo == null)
+                throw new Exception("Cliente não achado");
+            return contaTipo;
+        }
+
+        public static int PortalDoCliente(ContaBase conta)
+        {
+
+            Console.WriteLine($"======= Painel ======= {conta.Nome}");
+            Console.WriteLine("[0] Saque");
+            Console.WriteLine("[1] Deposito");
+            Console.WriteLine("[2] Mostrar Saldo");
+            Console.WriteLine("[3] Extrato");
+            Console.WriteLine("[4] Alterar Dados");
+            Console.WriteLine("[5] Transferir ");
+            Console.WriteLine($"{(conta is ContaInvestimento ? "[6] Investir" : "")}");
+
+            int numerosPossiveis = (conta is ContaInvestimento ? 7 : 6);
+            return Pergunta(numerosPossiveis, "O que você  deseja fazer ?");
+
         }
     }
 }

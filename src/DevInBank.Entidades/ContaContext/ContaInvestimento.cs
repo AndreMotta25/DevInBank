@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DevInBank.Entidades.ViewContext;
 
 namespace DevInBank.Entidades.ContaContext
 {
@@ -23,14 +24,15 @@ namespace DevInBank.Entidades.ContaContext
             DinheiroInvestido = false;
         }
 
-        public string InvestimentoSolicitado(ModelInvestimento investimento, int dias)
+        public void InvestimentoSolicitado(ModelInvestimento investimento, int dias)
         {
             decimal montante = CalcularInvestimento(investimento, dias);
-            return $"A {investimento.Tipo.Nome} Renderá {investimento.Tipo.Porcentagem}% resultando num montante de " +
-                $"{montante:C2}";
+
+            View.ResultadoDaSimulacaoView($"A {investimento.Tipo.Nome} Renderá {investimento.Tipo.Porcentagem}% resultando num montante de " +
+                $"{montante:C2}");
         }
 
-        public decimal CalcularInvestimento(ModelInvestimento investimento, int dias)
+        private decimal CalcularInvestimento(ModelInvestimento investimento, int dias)
         {
             var jurosPorDia = (Math.Pow(1D + ((double)investimento.Tipo.Porcentagem / 100D), 1D / 360D) - 1) * 100;
             var montante = investimento.Capital * Convert.ToDecimal(Math.Pow((1 + (jurosPorDia / 100)), dias));
@@ -56,7 +58,7 @@ namespace DevInBank.Entidades.ContaContext
             throw new Exception($"Lamento, mais o seu dinheiro está investido até a data {Investimento.Data}");
 
         }
-        public void InvestirDinheiro(decimal valor)
+        private void InvestirDinheiro(decimal valor)
         {
             if (valor > 0)
             {
@@ -66,6 +68,12 @@ namespace DevInBank.Entidades.ContaContext
             }
             throw new Exception("Lamento mas você não tem dinheiro o suficiente para fazer esse investimento");
 
+        }
+
+        public override void Transferencia(ContaBase contaDestino, decimal valor)
+        {
+            if (valor <= SaldoConta)
+                base.Transferencia(contaDestino, valor);
         }
     }
 }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DevInBank.Entidades.EnumAgencia;
 using DevInBank.Entidades.CpfContext;
 using DevInBank.Entidades.TransacoesContext;
 using DevInBank.Entidades.CategoriaContext;
@@ -45,8 +44,8 @@ namespace DevInBank.Entidades.ContaContext
 
         public ContaBase(string nome, string cpf, string endereco, decimal rendaMensal, decimal saldo, Agencia agencia, int conta)
         {
-            Nome = nome;
-            Endereco = endereco;
+            Nome = nome == null ? throw new Exception("Nome não pode estar vazio") : nome;
+            Endereco = endereco == null ? throw new Exception("Endereço não pode estar vazio") : endereco;
             RendaMensal = rendaMensal;
             SaldoConta = saldo;
             Transacoes = new List<Transacao>();
@@ -100,7 +99,7 @@ namespace DevInBank.Entidades.ContaContext
         // talvez eu tenha que modificar algumas coisas aqui ainda(tira o id)
         public virtual void Transferencia(ContaBase contaDestino, decimal valor)
         {
-            if (valor <= SaldoConta && !(Id == contaDestino.Id) && Cpf == contaDestino.Cpf
+            if (!(Id == contaDestino.Id) && Cpf != contaDestino.Cpf
             && DateTime.Now.DayOfWeek != DayOfWeek.Saturday && DateTime.Now.DayOfWeek != DayOfWeek.Sunday)
             {
                 SaldoConta -= valor;
@@ -129,13 +128,12 @@ namespace DevInBank.Entidades.ContaContext
 
         public void InformarDados()
         {
-            Console.WriteLine($"Agencia: {Agencia.Name} Numero Da Conta:{Conta}");
+            Console.WriteLine($"Agencia: {Agencia.Name}, Numero Da Conta:{Conta}");
         }
 
         public void ControladorTransferencia(List<Transferencia> transferencias)
         {
             Transferencias = transferencias;
         }
-
     }
 }

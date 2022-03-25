@@ -33,8 +33,8 @@ namespace DevInBank.Entidades.ContaContext
 
                 LimiteChequeEspecial = chequeEspecial;
                 SaldoConta = resultadoSaque;
-                
-                CriarTransacao("Saque", valor,ECategoria.Despesa);
+
+                CriarTransacao("Saque", valor, ECategoria.Despesa);
 
                 Console.WriteLine(SaldoConta);
                 Console.WriteLine("Saque efetuado");
@@ -56,6 +56,17 @@ namespace DevInBank.Entidades.ContaContext
             if (SaldoConta <= 0 && valor > 0)
                 LimiteChequeEspecial += Math.Abs(SaldoConta);
             base.Depositar(newValor);
+        }
+
+        public override void Transferencia(ContaBase contaDestino, decimal valor)
+        {
+            if (valor > (SaldoConta + LimiteChequeEspecial))
+                throw new Exception("Não há´limite o suficiente para está transação");
+
+            var chequeEspecial = (SaldoConta + LimiteChequeEspecial) - valor;
+            LimiteChequeEspecial = chequeEspecial;
+
+            base.Transferencia(contaDestino, valor);
         }
     }
 }

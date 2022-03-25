@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DevInBank.Entidades.ContaContext;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,8 @@ namespace DevInBank.Entidades.EnumCategoria
 {
     public enum ECategoria
     {
-        Despesa, Receita,
+        Despesa,
+        Receita
     }
 }
+

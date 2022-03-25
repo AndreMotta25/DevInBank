@@ -4,13 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DevInBank.Entidades.AgenciaContext;
-using DevInBank.Entidades.EnumAgencia;
 
 namespace DevInBank.Entidades.ModelsContext
 {
     public class ModelConta
     {
-        public ModelConta(string nome, string cpf, string endereco, decimal rendaMensal, decimal saldoConta,Agencia agencia)
+        public ModelConta(string nome, string cpf, string endereco, decimal rendaMensal, decimal saldoConta, Agencia agencia)
         {
             Nome = nome;
             Cpf = cpf;
@@ -25,7 +24,7 @@ namespace DevInBank.Entidades.ModelsContext
         public string Endereco { get; private set; }
         public decimal RendaMensal { get; private set; }
         public decimal SaldoConta { get; protected set; }
-        public Agencia Agencia {get;set;}
+        public Agencia Agencia { get; set; }
 
     }
 }

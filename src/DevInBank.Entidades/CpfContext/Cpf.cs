@@ -32,6 +32,7 @@ namespace DevInBank.Entidades.CpfContext
                     soma += NumerosCpf[indice] * _pesos[indice];
                 }
                 var result = 11 - (soma % 11);
+
                 NumerosCpf.Add(Verifica_E_RetornaDigito(result));
                 ValidarCpf();
             }

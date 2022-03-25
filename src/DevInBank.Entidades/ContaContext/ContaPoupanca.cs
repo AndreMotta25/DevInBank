@@ -25,7 +25,15 @@ namespace DevInBank.Entidades.ContaContext
                 valor += porcentagemMensal * valor;
             }
 
+            Console.Clear();
             Console.WriteLine($"Com os dados passados seu dinheiro Rendera R${valor:N2}");
+            Console.ReadKey();
+        }
+
+        public override void Transferencia(ContaBase contaDestino, decimal valor)
+        {
+            if (valor <= SaldoConta)
+                base.Transferencia(contaDestino, valor);
         }
     }
 }

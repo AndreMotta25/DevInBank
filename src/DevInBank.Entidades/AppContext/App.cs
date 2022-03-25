@@ -32,15 +32,30 @@ namespace DevInBank.Entidades.AppContext
                 new TipoInvestimento("LCA",9M,12),
                 new TipoInvestimento("CDB",10M,36)
             };
-            Tempo = DateTime.Now;
+            Tempo = DateTime.Now.ToShortDateString();
+            DicionarioContasDiversas = new Dictionary<int, dynamic>()
+            {
+                { 0,ContasCorrente},
+                { 1,ContasPoupanca},
+                { 2,ContasInvestimentos},
+            };
+            TotalInvestido = 0;
         }
 
+
+        /*EM MUDANÇAS FUTURAS, TROCAR ISSO P0R UMA CLASSE POIS FERE O CONCEITO DO SOLID */
         public void CriarConta(ContaPoupanca conta)
         {
-            Console.WriteLine("poupanca em produção");
-            Contas.Add(conta);
-        }
 
+            conta.ControladorTransferencia(Transferencias);
+
+            Console.WriteLine("Conta Criada");
+
+            Contas.Add(conta);
+            ContasPoupanca.Add(conta);
+
+            View.Apagar_E_Esperar_E_MostrarDadosView(conta);
+        }
         public void CriarConta(ContaInvestimento conta)
         {
             Console.Clear();
@@ -52,20 +67,23 @@ namespace DevInBank.Entidades.AppContext
             ContasInvestimentos.Add(conta);
             Contas.Add(conta);
 
-            Apagar_E_Esperar_E_MostrarDados(conta);
-        }
+            View.Apagar_E_Esperar_E_MostrarDadosView(conta);
 
+            TotalInvestido += conta.CapitalInvestido;
+        }
         public void CriarConta(ContaCorrente conta)
         {
             conta.ControladorTransferencia(Transferencias);
 
-            Console.WriteLine("Conta adicionada");
+            Console.WriteLine("Conta Criada");
 
             Contas.Add(conta);
             ContasCorrente.Add(conta);
 
-            Apagar_E_Esperar_E_MostrarDados(conta);
+            View.Apagar_E_Esperar_E_MostrarDadosView(conta);
         }
+
+
 
         public int PassarTempo(int meses)
         {
@@ -80,29 +98,22 @@ namespace DevInBank.Entidades.AppContext
                 throw new Exception("Uma conta vinculada a este cpf ja existe em nossa base de dados");
         }
 
-        public void Apagar_E_Esperar_E_MostrarDados(ContaBase conta)
-        {
-            conta.InformarDados();
-            Console.WriteLine("Pressione qualquer tecla para voltar para o menu");
-            Console.ReadKey();
-            Console.Clear();
-        }
+
         public List<Transferencia> Transferencias { get; private set; }
         public List<ContaCorrente> ContasCorrente { get; private set; }
         public List<ContaPoupanca> ContasPoupanca { get; private set; }
         public List<ContaInvestimento> ContasInvestimentos { get; private set; }
         public List<TipoInvestimento> TiposDeInvestimentos { get; private set; }
-        public List<ContaBase> Contas { get; set; }
-        public DateTime TempoSimulado { get; set; }
-        public DateTime Tempo { get; set; }
-
+        public List<ContaBase> Contas { get; private set; }
+        //public DateTime TempoSimulado { get; set; }
+        public string Tempo { get; private set; }
+        public Dictionary<int, dynamic> DicionarioContasDiversas { get; private set; }
+        public decimal TotalInvestido { get; private set; }
     }
 }
 
 
 /*
     =============== Alteracoes ================
-    1 - Pegar o objeto conta por meio de uma conta
     2 - Modificar o metodo da camada de view onde se escolhe a agencia
-    3 - Mexer na transferencia da conta corrente
 */
