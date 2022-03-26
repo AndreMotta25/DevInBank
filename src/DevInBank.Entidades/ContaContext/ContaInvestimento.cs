@@ -12,7 +12,7 @@ namespace DevInBank.Entidades.ContaContext
 {
     public class ContaInvestimento : ContaBase
     {
-        public ModelInvestimento Investimento { get; private set; }
+        public ModelInvestimento? Investimento { get; private set; }
         public int Dias { get; private set; }
 
         public bool DinheiroInvestido { get; private set; }
@@ -50,12 +50,12 @@ namespace DevInBank.Entidades.ContaContext
 
         public void TransferirInvestimentos(decimal valor)
         {
-            if (!DinheiroInvestido && DateTime.Now > Investimento.Data && CapitalInvestido > 0)
+            if (!DinheiroInvestido && DateTime.Now > Investimento?.Data && CapitalInvestido > 0)
             {
                 base.Depositar(valor);
                 return;
             }
-            throw new Exception($"Lamento, mais o seu dinheiro está investido até a data {Investimento.Data}");
+            throw new Exception($"Lamento, mais o seu dinheiro está investido até a data {Investimento?.Data}");
 
         }
         private void InvestirDinheiro(decimal valor)

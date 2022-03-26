@@ -10,8 +10,8 @@ namespace DevInBank.Entidades.CpfContext
     {
         private List<int> _pesos = new List<int>() { 10, 9, 8, 7, 6, 5, 4, 3, 2 };
         private List<int> NumerosCpf { get; set; }
-        public string CpfOriginal { get; private set; }
-        private string CpfCopia { get; set; }
+        public string? CpfOriginal { get; private set; }
+        private string? CpfCopia { get; set; }
 
         public Cpf(string cpf)
         {
@@ -21,7 +21,7 @@ namespace DevInBank.Entidades.CpfContext
             ValidarCpf();
         }
 
-        public string ValidarCpf()
+        public string? ValidarCpf()
         {
             if (NumerosCpf.Count < 11)
             {
@@ -53,10 +53,10 @@ namespace DevInBank.Entidades.CpfContext
             return digito;
         }
 
-        private string LimparCpf()
+        private string? LimparCpf()
         {
-            var cpfSemPontos = CpfOriginal.Replace(".", "#").Replace("-", "#");
-            var cpfParcialmenteLimpo = cpfSemPontos.Split("#").ToList<string>();
+            var cpfSemPontos = CpfOriginal?.Replace(".", "#").Replace("-", "#");
+            var cpfParcialmenteLimpo = cpfSemPontos?.Split("#").ToList<string>();
 
             // vamos ter uma copia do cpf original antes de ser validado
             CpfCopia = String.Join("", cpfParcialmenteLimpo);

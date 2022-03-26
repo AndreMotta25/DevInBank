@@ -25,7 +25,7 @@ while (true)
 
             if (opt == 0)
             {
-                app.CriarConta(new ContaCorrente(dadosConta.Nome,
+                app.SalvarConta(new ContaCorrente(dadosConta.Nome,
                                                  dadosConta.Cpf,
                                                  dadosConta.Endereco,
                                                  dadosConta.RendaMensal,
@@ -48,7 +48,7 @@ while (true)
 
                 conta.SimulacaoDeInvestimento(simulacaoRendimento.Meses, simulacaoRendimento.RentabilidadeAnual);
 
-                app.CriarConta(conta);
+                app.SalvarConta(conta);
             }
             else if (opt == 2)
             {
@@ -59,7 +59,6 @@ while (true)
                                                  dadosConta.SaldoConta,
                                                  dadosConta.Agencia,
                                                  numeroConta);
-                app.VerificarConta(conta);
                 while (true)
                 {
                     ModelInvestimento escolhaInvestimento = View.EscolheInvestimentoView(app.TiposDeInvestimentos);
@@ -140,27 +139,40 @@ while (true)
         {
             if (app.Contas.Count > 0)
             {
-                int ContasDesejadas = View.ListarContas();
-                dynamic ContaLista = app.DicionarioContasDiversas[ContasDesejadas].Count > 0
-                ? app.DicionarioContasDiversas[ContasDesejadas]
-                : throw new Exception("Não temos conta deste tipo cadastrada");
+                int contasDesejadas = View.ListarContas();
 
-                foreach (dynamic conta in ContaLista)
+                List<ContaBase> contas = new List<ContaBase>();
+
+                if(contasDesejadas == 0 )
+                    contas = app.Contas.FindAll(x => x is ContaCorrente);   
+                else if(contasDesejadas == 1 )
+                    contas = app.Contas.FindAll(x => x is ContaPoupanca);
+                else if(contasDesejadas == 2 )
+                    contas = app.Contas.FindAll(x => x is ContaInvestimento);   
+
+                contas = contas.Count <= 0? throw new Exception("Nao temos este tipo de conta"): contas;
+
+                foreach(var conta in contas)
                     conta.InformarDados();
-
-                Console.ReadKey();
-                continue;
+                                             
+                 Console.ReadKey();
+                 continue; 
             }
 
             throw new Exception("Não temos contas ainda!");
         }
         else if (opt == 4)
         {
-            foreach (ContaBase conta in app.Contas)
+            var contas =  app.Contas.Where(conta => conta.SaldoConta < 0);
+            if(contas.Count() <= 0 ) 
+                throw new Exception("Nao ha contas com saldo negativo");
+
+            foreach (ContaBase conta in contas)
             {
                 if (conta.SaldoConta < 0)
-                    Console.WriteLine($"{conta.Conta} {conta.SaldoConta}");
+                    Console.WriteLine($"Numero da conta: {conta.Conta} {conta.SaldoConta:C2}");
             }
+            Console.ReadKey();
         }
         else if (opt == 5)
         {

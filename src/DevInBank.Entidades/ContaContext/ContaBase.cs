@@ -17,9 +17,9 @@ namespace DevInBank.Entidades.ContaContext
         #region Propriedades
         // string
         public string Nome { get; private set; }
-        public string Cpf { get; private set; }
-        private Cpf ValidarCpf { get; set; }
-        public string Endereco { get; private set; }
+        public string? Cpf { get; private set; }
+        private Cpf? ValidarCpf { get; set; }
+        public string Endereco { get; private set; } 
 
         // decimal
         public decimal RendaMensal { get; private set; }
@@ -28,13 +28,11 @@ namespace DevInBank.Entidades.ContaContext
         public Agencia Agencia { get; private set; }
         public int Conta { get; private set; }
 
-        public List<Transacao> Transacoes { get; set; }
+        public List<Transacao>Transacoes { get; set; }
 
         // teste 
-        public List<Transferencia> Transferencias { get; set; }
+        public List<Transferencia>? Transferencias { get; set; }
         public Guid Id { get; private set; }
-
-
 
 
 
@@ -44,15 +42,15 @@ namespace DevInBank.Entidades.ContaContext
 
         public ContaBase(string nome, string cpf, string endereco, decimal rendaMensal, decimal saldo, Agencia agencia, int conta)
         {
-            Nome = nome == null ? throw new Exception("Nome não pode estar vazio") : nome;
-            Endereco = endereco == null ? throw new Exception("Endereço não pode estar vazio") : endereco;
+            Nome = nome == "" ? throw new Exception("Nome não pode estar vazio") : nome;
+            Endereco = endereco == "" ? throw new Exception("Endereço não pode estar vazio") : endereco;
             RendaMensal = rendaMensal;
             SaldoConta = saldo;
             Transacoes = new List<Transacao>();
             Agencia = agencia;
             Conta = conta;
             ValidarCpf = new Cpf(cpf);
-            Cpf = ValidarCpf.ValidarCpf();
+            Cpf = ValidarCpf?.ValidarCpf();
             Id = Guid.NewGuid();
 
         }
