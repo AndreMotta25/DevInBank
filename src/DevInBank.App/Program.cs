@@ -3,6 +3,7 @@ using DevInBank.Entidades.ViewContext;
 using DevInBank.Entidades.ContaContext;
 using DevInBank.Entidades.ModelsContext;
 using DevInBank.Entidades.AgenciaContext;
+using DevInBank.Entidades.TransacoesContext;
 
 var app = new App();
 
@@ -195,10 +196,15 @@ while (true)
             if (conta == null)
                 throw new Exception("Não achamos a conta deseja ");
 
+
             foreach (var tr in conta.Transacoes)
             {
-                Console.WriteLine($"{tr.Categoria.Nome} => {tr.Valor:C2}  Data {tr.DataTransacao}");
+                if(tr is TransacaoInvestimento) 
+                    Console.WriteLine($"{tr.Categoria?.Nome} => {tr.Valor:C2} , Data {tr.DataTransacao} , Data da Retirada: {(tr as TransacaoInvestimento).DataDaRetirada}");
+                else     
+                    Console.WriteLine($"{tr.Categoria?.Nome} => {tr.Valor:C2}  Data {tr.DataTransacao}");
             }
+
             Console.ReadKey();
         }
         else if (opt == 6)

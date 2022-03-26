@@ -7,6 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DevInBank.Entidades.ViewContext;
+using DevInBank.Entidades.TransacoesContext;
+using DevInBank.Entidades.CategoriaContext;
+using DevInBank.Entidades.EnumCategoria;
 
 namespace DevInBank.Entidades.ContaContext
 {
@@ -42,7 +45,8 @@ namespace DevInBank.Entidades.ContaContext
         {
             Investimento = investimento;
             Dias = dias;
-
+            
+            Transacoes.Add(new TransacaoInvestimento(investimento.Capital,new Categoria("Investimento", ECategoria.Despesa) ,DateTime.Now, investimento.Data,investimento.Tipo.Nome));
             DinheiroInvestido = true;
 
             InvestirDinheiro(investimento.Capital);
