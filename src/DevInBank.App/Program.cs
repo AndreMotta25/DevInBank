@@ -78,7 +78,7 @@ while (true)
                     else if (r == 2)
                         continue;
                 }
-                app.CriarConta(conta);
+                app.SalvarConta(conta);
             }
 
         }
