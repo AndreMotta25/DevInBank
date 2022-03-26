@@ -133,5 +133,11 @@ namespace DevInBank.Entidades.ContaContext
         {
             Transferencias = transferencias;
         }
+
+        public void AlterarDados(string nome, string endereco, Agencia agencia) {
+            Nome = nome;
+            Endereco = endereco;
+            Agencia = agencia;
+        }
     }
 }

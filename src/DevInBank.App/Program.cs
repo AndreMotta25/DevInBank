@@ -2,6 +2,7 @@
 using DevInBank.Entidades.ViewContext;
 using DevInBank.Entidades.ContaContext;
 using DevInBank.Entidades.ModelsContext;
+using DevInBank.Entidades.AgenciaContext;
 
 var app = new App();
 
@@ -106,10 +107,22 @@ while (true)
             {
                 conta.Extrato();
             }
-            else if (resposta == 4)
-                // to do 
-                Console.WriteLine();
+            else if (resposta == 4){
+                Console.Clear();
 
+                Console.WriteLine("Bem vindo ao painel de alteracao de dados!");
+                Console.WriteLine("Digite seu nome: ");
+                
+                string? nome = Console.ReadLine();
+                
+                Console.WriteLine("Digite seu Endereco: ");
+                string? endereco = Console.ReadLine();
+
+                Agencia agencia  = View.EscolheAgencia(app.Agencias);
+                
+                conta.AlterarDados(nome,endereco,agencia);
+
+            }
             else if (resposta == 5)
             {
                 ContaBase contaDestino = View.ContaClienteView(app, "Digite o numero da conta destino");
@@ -121,7 +134,7 @@ while (true)
             }
             else if (resposta == 6)
             {
-                var contaInvestidor = (conta as ContaInvestimento);
+                var  contaInvestidor  = (conta as ContaInvestimento);
 
                 if (contaInvestidor.DinheiroInvestido)
                     throw new Exception("Seu dinheiro já está investido");
