@@ -8,12 +8,13 @@ using System.Text;
 using System.Threading.Tasks;
 using DevInBank.Entidades.AgenciaContext;
 using DevInBank.Entidades.InvestimentosContext;
+using DevInBank.Entidades.Interface;
 
 namespace DevInBank.Entidades.AppContext
 {
     public class App
     {
-        public List<Agencia> Agencias { get; set; }
+
         public App()
         {
             Transferencias = new List<Transferencia>();
@@ -83,7 +84,11 @@ namespace DevInBank.Entidades.AppContext
             View.Apagar_E_Esperar_E_MostrarDadosView(conta);
         }
 
-
+        public void CriarContaTeste(ICriar criadorConta)
+        {
+            criadorConta.CriarConta();
+            Contas.Add(criadorConta.Conta);
+        }
 
         public int PassarTempo(int meses)
         {
@@ -108,7 +113,8 @@ namespace DevInBank.Entidades.AppContext
         //public DateTime TempoSimulado { get; set; }
         public string Tempo { get; private set; }
         public Dictionary<int, dynamic> DicionarioContasDiversas { get; private set; }
-        public decimal TotalInvestido { get; private set; }
+        public decimal TotalInvestido { get; set; }
+        public List<Agencia> Agencias { get; set; }
     }
 }
 

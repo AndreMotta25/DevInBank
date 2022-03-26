@@ -2,6 +2,8 @@
 using DevInBank.Entidades.ViewContext;
 using DevInBank.Entidades.ContaContext;
 using DevInBank.Entidades.ModelsContext;
+using DevInBank.Entidades.Interface;
+using DevInBank.Entidades.CriarContaContext;
 
 var app = new App();
 
@@ -60,6 +62,12 @@ while (true)
                                                  dadosConta.Agencia,
                                                  numeroConta);
                 app.VerificarConta(conta);
+
+                /*ICriar criadorConta = new CriarContaInvestimento(conta, app);
+
+                app.CriarContaTeste(criadorConta);
+*/
+
                 while (true)
                 {
                     ModelInvestimento escolhaInvestimento = View.EscolheInvestimentoView(app.TiposDeInvestimentos);
