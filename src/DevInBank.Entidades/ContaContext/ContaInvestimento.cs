@@ -7,12 +7,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DevInBank.Entidades.ViewContext;
+using DevInBank.Entidades.TransacoesContext;
+using DevInBank.Entidades.CategoriaContext;
+using DevInBank.Entidades.EnumCategoria;
 
 namespace DevInBank.Entidades.ContaContext
 {
     public class ContaInvestimento : ContaBase
     {
-        public ModelInvestimento Investimento { get; private set; }
+        public ModelInvestimento? Investimento { get; private set; }
         public int Dias { get; private set; }
 
         public bool DinheiroInvestido { get; private set; }
@@ -42,7 +45,8 @@ namespace DevInBank.Entidades.ContaContext
         {
             Investimento = investimento;
             Dias = dias;
-
+            
+            Transacoes.Add(new TransacaoInvestimento(investimento.Capital,new Categoria("Investimento", ECategoria.Despesa) ,DateTime.Now, investimento.Data,investimento.Tipo.Nome));
             DinheiroInvestido = true;
 
             InvestirDinheiro(investimento.Capital);
@@ -50,12 +54,12 @@ namespace DevInBank.Entidades.ContaContext
 
         public void TransferirInvestimentos(decimal valor)
         {
-            if (!DinheiroInvestido && DateTime.Now > Investimento.Data && CapitalInvestido > 0)
+            if (!DinheiroInvestido && DateTime.Now > Investimento?.Data && CapitalInvestido > 0)
             {
                 base.Depositar(valor);
                 return;
             }
-            throw new Exception($"Lamento, mais o seu dinheiro está investido até a data {Investimento.Data}");
+            throw new Exception($"Lamento, mais o seu dinheiro está investido até a data {Investimento?.Data}");
 
         }
         private void InvestirDinheiro(decimal valor)

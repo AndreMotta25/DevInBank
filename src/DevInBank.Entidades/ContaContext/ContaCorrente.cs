@@ -61,12 +61,14 @@ namespace DevInBank.Entidades.ContaContext
         public override void Transferencia(ContaBase contaDestino, decimal valor)
         {
             if (valor > (SaldoConta + LimiteChequeEspecial))
-                throw new Exception("Não há´limite o suficiente para está transação");
+                throw new Exception("Não há limite o suficiente para está transação");
 
             var chequeEspecial = (SaldoConta + LimiteChequeEspecial) - valor;
             LimiteChequeEspecial = chequeEspecial;
 
             base.Transferencia(contaDestino, valor);
         }
+
+        
     }
 }

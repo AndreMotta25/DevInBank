@@ -9,6 +9,7 @@ namespace DevInBank.Entidades.TransacoesContext
 {
     public class Transacao
     {
+       
         public Transacao(decimal valor, Categoria categoria, DateTime dataTransacao)
         {
             Categoria = categoria;
@@ -16,7 +17,7 @@ namespace DevInBank.Entidades.TransacoesContext
             DataTransacao = dataTransacao;
         }
 
-        public Categoria Categoria { get; private set; }
+        public Categoria? Categoria { get; private set; }
         public decimal Valor { get; private set; }
         public DateTime DataTransacao { get; private set; }
     }

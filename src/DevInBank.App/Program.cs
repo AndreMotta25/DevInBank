@@ -2,6 +2,8 @@
 using DevInBank.Entidades.ViewContext;
 using DevInBank.Entidades.ContaContext;
 using DevInBank.Entidades.ModelsContext;
+using DevInBank.Entidades.AgenciaContext;
+using DevInBank.Entidades.TransacoesContext;
 
 var app = new App();
 
@@ -25,7 +27,7 @@ while (true)
 
             if (opt == 0)
             {
-                app.CriarConta(new ContaCorrente(dadosConta.Nome,
+                app.SalvarConta(new ContaCorrente(dadosConta.Nome,
                                                  dadosConta.Cpf,
                                                  dadosConta.Endereco,
                                                  dadosConta.RendaMensal,
@@ -48,7 +50,7 @@ while (true)
 
                 conta.SimulacaoDeInvestimento(simulacaoRendimento.Meses, simulacaoRendimento.RentabilidadeAnual);
 
-                app.CriarConta(conta);
+                app.SalvarConta(conta);
             }
             else if (opt == 2)
             {
@@ -59,7 +61,6 @@ while (true)
                                                  dadosConta.SaldoConta,
                                                  dadosConta.Agencia,
                                                  numeroConta);
-                app.VerificarConta(conta);
                 while (true)
                 {
                     ModelInvestimento escolhaInvestimento = View.EscolheInvestimentoView(app.TiposDeInvestimentos);
@@ -79,7 +80,7 @@ while (true)
                     else if (r == 2)
                         continue;
                 }
-                app.CriarConta(conta);
+                app.SalvarConta(conta);
             }
 
         }
@@ -107,10 +108,22 @@ while (true)
             {
                 conta.Extrato();
             }
-            else if (resposta == 4)
-                // to do 
-                Console.WriteLine();
+            else if (resposta == 4){
+                Console.Clear();
 
+                Console.WriteLine("Bem vindo ao painel de alteracao de dados!");
+                Console.WriteLine("Digite seu nome: ");
+                
+                string? nome = Console.ReadLine();
+                
+                Console.WriteLine("Digite seu Endereco: ");
+                string? endereco = Console.ReadLine();
+
+                Agencia agencia  = View.EscolheAgencia(app.Agencias);
+                
+                conta.AlterarDados(nome,endereco,agencia);
+
+            }
             else if (resposta == 5)
             {
                 ContaBase contaDestino = View.ContaClienteView(app, "Digite o numero da conta destino");
@@ -122,7 +135,7 @@ while (true)
             }
             else if (resposta == 6)
             {
-                var contaInvestidor = (conta as ContaInvestimento);
+                var  contaInvestidor  = (conta as ContaInvestimento);
 
                 if (contaInvestidor.DinheiroInvestido)
                     throw new Exception("Seu dinheiro já está investido");
@@ -140,27 +153,40 @@ while (true)
         {
             if (app.Contas.Count > 0)
             {
-                int ContasDesejadas = View.ListarContas();
-                dynamic ContaLista = app.DicionarioContasDiversas[ContasDesejadas].Count > 0
-                ? app.DicionarioContasDiversas[ContasDesejadas]
-                : throw new Exception("Não temos conta deste tipo cadastrada");
+                int contasDesejadas = View.ListarContas();
 
-                foreach (dynamic conta in ContaLista)
+                List<ContaBase> contas = new List<ContaBase>();
+
+                if(contasDesejadas == 0 )
+                    contas = app.Contas.FindAll(x => x is ContaCorrente);   
+                else if(contasDesejadas == 1 )
+                    contas = app.Contas.FindAll(x => x is ContaPoupanca);
+                else if(contasDesejadas == 2 )
+                    contas = app.Contas.FindAll(x => x is ContaInvestimento);   
+
+                contas = contas.Count <= 0? throw new Exception("Nao temos este tipo de conta"): contas;
+
+                foreach(var conta in contas)
                     conta.InformarDados();
-
-                Console.ReadKey();
-                continue;
+                                             
+                 Console.ReadKey();
+                 continue; 
             }
 
             throw new Exception("Não temos contas ainda!");
         }
         else if (opt == 4)
         {
-            foreach (ContaBase conta in app.Contas)
+            var contas =  app.Contas.Where(conta => conta.SaldoConta < 0);
+            if(contas.Count() <= 0 ) 
+                throw new Exception("Nao ha contas com saldo negativo");
+
+            foreach (ContaBase conta in contas)
             {
                 if (conta.SaldoConta < 0)
-                    Console.WriteLine($"{conta.Conta} {conta.SaldoConta}");
+                    Console.WriteLine($"Numero da conta: {conta.Conta} {conta.SaldoConta:C2}");
             }
+            Console.ReadKey();
         }
         else if (opt == 5)
         {
@@ -170,10 +196,15 @@ while (true)
             if (conta == null)
                 throw new Exception("Não achamos a conta deseja ");
 
+
             foreach (var tr in conta.Transacoes)
             {
-                Console.WriteLine($"{tr.Categoria.Nome} => {tr.Valor:C2}  Data {tr.DataTransacao}");
+                if(tr is TransacaoInvestimento) 
+                    Console.WriteLine($"{tr.Categoria?.Nome} => {tr.Valor:C2} , Data {tr.DataTransacao} , Data da Retirada: {(tr as TransacaoInvestimento).DataDaRetirada}");
+                else     
+                    Console.WriteLine($"{tr.Categoria?.Nome} => {tr.Valor:C2}  Data {tr.DataTransacao}");
             }
+
             Console.ReadKey();
         }
         else if (opt == 6)

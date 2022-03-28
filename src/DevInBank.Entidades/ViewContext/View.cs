@@ -125,7 +125,7 @@ namespace DevInBank.Entidades.ViewContext
             int meses = int.Parse(Console.ReadLine());
 
             Console.WriteLine($"Qual e a porcentage anual da poupanca ? ");
-            decimal.TryParse(Console.ReadLine().Replace(".", ","), out porcentagemAnual);
+            decimal.TryParse(Console.ReadLine()?.Replace(".", ","), out porcentagemAnual);
 
             // DTO  
             return new ModelSimulacao(meses, porcentagemAnual);
